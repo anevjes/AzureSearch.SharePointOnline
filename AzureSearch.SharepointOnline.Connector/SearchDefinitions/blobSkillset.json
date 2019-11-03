@@ -1,0 +1,248 @@
+{
+  "description": "Extract OCR, detect language, extract entities, key-phrases, etc., with merge and splits",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Vision.ImageAnalysisSkill",
+      "description": "Extract visual features from images",
+      "defaultLanguageCode": "en",
+      "visualFeatures": [ "Tags", "Description", "Categories" ],
+      "context": "/document/normalized_images/*",
+      "inputs": [
+        {
+          "name": "image",
+          "source": "/document/normalized_images/*"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "tags",
+          "targetName": "imageTags"
+        },
+        {
+          "name": "description",
+          "targetName": "imageDescriptions"
+        },
+        {
+          "name": "categories",
+          "targetName": "imageCategories"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+      "description": "Extract text (plain and structured) from image.",
+      "textExtractionAlgorithm": "printed",
+      "defaultLanguageCode": "en",
+      "detectOrientation": true,
+      "context": "/document/normalized_images/*",
+      "inputs": [
+        {
+          "name": "image",
+          "source": "/document/normalized_images/*"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "targetName": "ocrPrintedText"
+        },
+        {
+          "name": "layoutText",
+          "targetName": "ocrPrintedLayoutText"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+      "description": "Merge text content with printed text of each image inserted at the right location in the content field",
+      "context": "/document",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        },
+        {
+          "name": "itemsToInsert",
+          "source": "/document/normalized_images/*/ocrPrintedText"
+        },
+        {
+          "name": "offsets",
+          "source": "/document/normalized_images/*/contentOffset"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mergedText",
+          "targetName": "fullText"
+        },
+        {
+          "name": "mergedOffsets",
+          "targetName": "fullTextOffsets"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.LanguageDetectionSkill",
+      "description": "Detect language on text.",
+      "context": "/document",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/fullText"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "languageCode",
+          "targetName": "languageCode"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
+      "description": "Split text into pages for subsequent skill processing.",
+      "defaultLanguageCode": "en",
+      "textSplitMode": "pages",
+      "maximumPageLength": 4000,
+      "context": "/document/fullText",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/fullText"
+        },
+        {
+          "name": "languageCode",
+          "source": "/document/languageCode"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "textItems",
+          "targetName": "pages"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.EntityRecognitionSkill",
+      "description": "Extract entities from pages.",
+      "categories": [ "Organization", "Location", "Person", "DateTime" ],
+      "defaultLanguageCode": "en",
+      "includeTypelessEntities": true,
+      "context": "/document/fullText/pages/*",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/fullText/pages/*"
+        },
+        {
+          "name": "languageCode",
+          "source": "/document/languageCode"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "organizations",
+          "targetName": "organizations"
+        },
+        {
+          "name": "locations",
+          "targetName": "locations"
+        },
+        {
+          "name": "persons",
+          "targetName": "people"
+        },
+        {
+          "name": "dateTimes",
+          "targetName": "dateTimes"
+        },
+        {
+          "name": "namedEntities",
+          "targetName": "namedEntities"
+        },
+        {
+          "name": "entities",
+          "targetName": "typelessEntities"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+      "description": "Extract key-phrases from pages.",
+      "defaultLanguageCode": "en",
+      "context": "/document/fullText/pages/*",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/fullText/pages/*"
+        },
+        {
+          "name": "languageCode",
+          "source": "/document/languageCode"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "keyPhrases",
+          "targetName": "keyPhrases"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+      "description": "Our SharePoint Metadata mapping custom skill",
+      "uri": "[CustomSpoMetadataSkillUri]",
+      "batchSize": 1,
+      "context": "/document",
+      "httpHeaders": {
+        "SPOMetadataMapper-Api-Key": "[SPOMetadataMapper-Api-Key]"
+      },
+      "inputs": [
+        {
+          "name": "docpath",
+          "source": "/document/blobUri"
+        },
+        {
+          "name": "sastoken",
+          "source": "/document/metadata_storage_sas_token"
+        },
+        {
+          "name": "metadataurl",
+          "source": "/document/metadataurl"
+        }
+
+      ],
+      "outputs": [
+        {
+          "name": "tags",
+          "targetName": "tags"
+        },
+        {
+          "name": "acls",
+          "targetName": "acls"
+        },
+        {
+          "name": "createdAuthorDisplayName",
+          "targetName": "CreatedAuthorDisplayName"
+        },
+        {
+          "name": "SPWebUrl",
+          "targetName": "SPWebUrl"
+        },
+        {
+          "name": "LinkFilename",
+          "targetName": "LinkFilename"
+        },
+        {
+          "name": "ContentType",
+          "targetName": "ContentType"
+        }
+      ]
+    }
+  ],
+  "cognitiveServices": {
+    "@odata.type": "#Microsoft.Azure.Search.CognitiveServicesByKey",
+    "description": "[CognitiveServicesAccount]",
+    "key": "[CognitiveServicesKey]"
+  }
+}

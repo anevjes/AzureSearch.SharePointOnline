@@ -1,0 +1,105 @@
+{
+  "name": "[IndexerName]",
+  "dataSourceName": "[DataSourceName]",
+  "targetIndexName": "[IndexName]",
+  "skillsetName": "[SkillSetName]",
+  "fieldMappings": [
+    {
+      "sourceFieldName": "metadata_storage_path",
+      "targetFieldName": "id",
+      "mappingFunction": { "name": "base64Encode" }
+    },
+    {
+      "sourceFieldName": "metadata_storage_path",
+      "targetFieldName": "blobUri"
+    },
+    {
+      "sourceFieldName": "metadata_storage_name",
+      "targetFieldName": "metadata_storage_name"
+    },
+    {
+      "sourceFieldName": "metadata_storage_sas_token",
+      "targetFieldName": "metadata_storage_sas_token"
+    },
+    {
+      "sourceFieldName": "metadataurl",
+      "targetFieldName": "metadataurl"
+    }
+
+  ],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/fullText",
+      "targetFieldName": "fullText"
+    },
+    {
+      "sourceFieldName": "/document/languageCode",
+      "targetFieldName": "languageCode"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/keyPhrases/*",
+      "targetFieldName": "keyPhrases"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/organizations/*",
+      "targetFieldName": "organizations"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/locations/*",
+      "targetFieldName": "locations"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/people/*",
+      "targetFieldName": "people"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/dateTimes/*",
+      "targetFieldName": "dateTimes"
+    },
+    {
+      "sourceFieldName": "/document/fullText/pages/*/typelessEntities/*/name",
+      "targetFieldName": "typelessEntities"
+    },
+    {
+      "sourceFieldName": "/document/normalized_images/*/imageDescriptions/captions/*/text",
+      "targetFieldName": "imageDescriptions"
+    },
+    {
+      "sourceFieldName": "/document/normalized_images/*/imageCategories/*/name",
+      "targetFieldName": "imageCategories"
+    },
+    {
+      "sourceFieldName": "/document/normalized_images/*/imageTags/*/name",
+      "targetFieldName": "imageTags"
+    },
+    {
+      "sourceFieldName": "/document/CreatedAuthorDisplayName",
+      "targetFieldName": "CreatedAuthorDisplayName"
+    },
+    {
+      "sourceFieldName": "/document/SPWebUrl",
+      "targetFieldName": "SPWebUrl"
+    },
+    {
+      "sourceFieldName": "/document/LinkFilename",
+      "targetFieldName": "LinkFilename"
+    },
+    {
+      "sourceFieldName": "/document/ContentType",
+      "targetFieldName": "ContentType"
+    }
+  ],
+  "parameters": {
+    "batchSize": 1,
+    "maxFailedItems": -1,
+    "maxFailedItemsPerBatch": -1,
+    "configuration": {
+      "dataToExtract": "contentAndMetadata",
+      "imageAction": "generateNormalizedImages",
+      "excludedFileNameExtensions": ".json,.js",
+      "failOnUnsupportedContentType": false,
+      "indexStorageMetadataOnlyForOversizedDocuments": true,
+      "failOnUnprocessableDocument": false
+    }
+  }
+}

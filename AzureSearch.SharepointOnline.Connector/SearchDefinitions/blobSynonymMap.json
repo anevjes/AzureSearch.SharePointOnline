@@ -1,0 +1,5 @@
+{
+  "name": "[SynonymMapName]",
+  "format": "solr",
+  "synonyms": "MS => Microsoft\nAzure,cloud,nube\nvirtual machine,máquina virtual,vm\nDocker,containers,contenedores"
+}

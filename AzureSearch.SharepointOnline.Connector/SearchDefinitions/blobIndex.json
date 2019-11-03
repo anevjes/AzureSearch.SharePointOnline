@@ -1,0 +1,180 @@
+{
+  "fields": [
+    {
+      "name": "id",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,
+      "key": true
+    },
+    {
+      "name": "blobUri",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": true,
+      "facetable": false
+    },
+    {
+      "name": "fullText",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "languageCode",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "keyPhrases",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,
+      "synonymMaps": [
+        "[SynonymMapName]"
+      ]
+    },
+    {
+      "name": "organizations",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "locations",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": true
+    },
+    {
+      "name": "SPWebUrl",
+      "type": "Edm.String",
+      "searchable": true,
+      "sortable": false,
+      "filterable": false,
+      "facetable": false,
+      "retrievable": true
+    },
+    {
+      "name": "ContentType",
+      "type": "Edm.String",
+      "searchable": true,
+      "sortable": false,
+      "filterable": true,
+      "facetable": true,
+      "retrievable": true
+    },
+    {
+      "name": "CreatedAuthorDisplayName",
+      "type": "Edm.String",
+      "searchable": true,
+      "sortable": true,
+      "filterable": true,
+      "facetable": true,
+      "retrievable": true
+    },
+    {
+      "name": "LinkFilename",
+      "type": "Edm.String",
+      "searchable": true,
+      "sortable": true,
+      "filterable": true,
+      "facetable": false,
+      "retrievable": true
+    },
+    {
+      "name": "people",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "dateTimes",
+      "type": "Collection(Edm.String)",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "typelessEntities",
+      "type": "Collection(Edm.String)",
+      "searchable": false,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "imageDescriptions",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "imageCategories",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "imageTags",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false
+    },
+    {
+      "name": "ocrPrintedText",
+      "type": "Edm.String",
+      "searchable": true,
+      "sortable": true,
+      "filterable": true,
+      "facetable": false,
+      "retrievable": true
+    }
+  ],
+  "corsOptions": {
+    "allowedOrigins": [ "*" ]
+  },
+  "suggesters": [
+    {
+      "name": "sg",
+      "searchMode": "analyzingInfixMatching",
+      "sourceFields": [ "keyPhrases", "organizations", "locations", "people" ]
+    }
+  ]
+}

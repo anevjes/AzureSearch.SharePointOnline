@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AzureSearch.SharePointConnector": {
+      "commandName": "Project",
+      "commandLineArgs": "-fullcrawl"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

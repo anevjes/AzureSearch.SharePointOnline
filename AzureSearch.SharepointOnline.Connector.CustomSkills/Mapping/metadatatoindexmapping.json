@@ -1,0 +1,29 @@
+{
+  "description": "",
+  "outputMapping": [
+    {
+      "metadataFieldName": "ContentType",
+      "outputFieldName": "ContentType"
+    },
+    {
+      "metadataFieldName": "Created",
+      "outputFieldName": "Created"
+    },
+    {
+      "metadataFieldName": "Modified",
+      "outputFieldName": "Modified"
+    },
+    {
+      "metadataFieldName": "SPWebUrl",
+      "outputFieldName": "SPWebUrl"
+    },
+    {
+      "metadataFieldName": "LinkFilename",
+      "outputFieldName": "LinkFilename"
+    },
+    {
+      "metadataFieldName": "createdAuthorDisplayName",
+      "outputFieldName": "createdAuthorDisplayName"
+    }
+  ]
+}

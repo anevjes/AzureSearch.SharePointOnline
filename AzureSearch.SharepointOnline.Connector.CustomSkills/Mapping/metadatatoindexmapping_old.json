@@ -1,0 +1,37 @@
+{
+  "description": "",
+  "outputMapping": [
+    {
+      "metadataFieldName": "createdAuthorDisplayName",
+      "outputFieldName": "createdAuthorDisplayName"
+    },
+    {
+      "metadataFieldName": "SPWebUrl",
+      "outputFieldName": "SPWebUrl"
+    },
+    {
+      "metadataFieldName": "Documenttype",
+      "outputFieldName": "documentType"
+    },
+    {
+      "metadataFieldName": "Region",
+      "outputFieldName": "region"
+    },
+    {
+      "metadataFieldName": "Country",
+      "outputFieldName": "country"
+    },
+    {
+      "metadataFieldName": "AustraliaState_x0028_ifapplicable_x0029_",
+      "outputFieldName": "australiaState"
+    },
+    {
+      "metadataFieldName": "Asset",
+      "outputFieldName": "asset"
+    },
+    {
+      "metadataFieldName": "LinkFilename",
+      "outputFieldName": "linkFilename"
+    }
+  ]  
+}
