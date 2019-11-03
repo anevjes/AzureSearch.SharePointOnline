@@ -32,6 +32,8 @@ At the moment there is no out of the box Azure Search indexer for SharePoint Onl
 
 ## High Level Architecture Overview
 
+![AzureSearch.SharePointOnline High Level Architecture](https://raw.githubusercontent.com/anevjes/AzureSearch.SharePointOnline/master/Diagrams/PNG/HighLevelComponentArchitecture.png)
+
 The solution comprises of the following Azure resources:
 
 - **Azure Search**
