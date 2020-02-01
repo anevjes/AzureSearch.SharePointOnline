@@ -1,7 +1,7 @@
 # Introduction 
-The motivation behind this project is to simplify the ingestion of SharePoint Online Document library content into Azure Search.
+The motivation behind this project is to simplify the ingestion of SharePoint Online Document library content into Azure Cognitive Search.
 
-Azure Search brings in a number of benefits over standard SharePoint Online Search allowing you to have more control over how you further refine and enrich content in search through:
+Azure Cognitive Search brings in a number of benefits over standard SharePoint Online Search allowing you to have more control over how you further refine and enrich content in search through:
 
 - Deep knowledge mining of your content with pre-built AI-based [Azure Cognitive Services](https://docs.microsoft.com/en-us/azure/search/cognitive-search-predefined-skills)
 - [Synonyms](https://docs.microsoft.com/en-us/azure/search/search-synonyms
@@ -10,25 +10,25 @@ Azure Search brings in a number of benefits over standard SharePoint Online Sear
 - Modeling of relational Data
 - Multi Language indexes
 
-### Cognitive Search
-Cognitive search is an AI feature in Azure Search, used to extract text from images, blobs, and other unstructured data sources - enriching the content to make it more searchable in an Azure Search index. Extraction and enrichment are implemented through cognitive skills attached to an indexing pipeline. AI enrichments are supported in the following ways:
+### Azure Cognitive Search
+Cognitive search is an AI feature in Azure Cognitive Search, used to extract text from images, blobs, and other unstructured data sources - enriching the content to make it more searchable in an Azure Cognitive Search index. Extraction and enrichment are implemented through cognitive skills attached to an indexing pipeline. AI enrichments are supported in the following ways:
 Natural language processing skills include entity recognition, language detection, key phrase extraction, text manipulation, and sentiment detection. With these skills, unstructured text can assume new forms, mapped as searchable and filterable fields in an index.
 
-Image processing skills include Optical Character Recognition (OCR) and identification of visual features, such as facial detection, image interpretation, image recognition (famous people and landmarks) or attributes like colors or image orientation. You can create text-representations of image content, searchable using all the query capabilities of Azure Search.
+Image processing skills include Optical Character Recognition (OCR) and identification of visual features, such as facial detection, image interpretation, image recognition (famous people and landmarks) or attributes like colors or image orientation. You can create text-representations of image content, searchable using all the query capabilities of Azure Cognitive Search.
 
 In addition to the out of the box pre built Azure Cognitive skills you can further enrich the index ingestion pipeline by building your own custom skills in form of custom Web APIs.
 
-### Azure Search indexer:
+### Azure Cognitive Search indexer:
 
-An [indexer](https://docs.microsoft.com/en-us/azure/search/search-indexer-overview) in Azure Search is a crawler that extracts searchable data and metadata from an external Azure data source and populates an index based on field-to-field mappings between the index and your data source. This approach is sometimes referred to as a 'pull model' because the service pulls data in without you having to write any code that adds data to an index.
+An [indexer](https://docs.microsoft.com/en-us/azure/search/search-indexer-overview) in Azure Cognitive Search is a crawler that extracts searchable data and metadata from an external Azure data source and populates an index based on field-to-field mappings between the index and your data source. This approach is sometimes referred to as a 'pull model' because the service pulls data in without you having to write any code that adds data to an index.
 
 # SharePoint Online Document Library Connector
-Azure Search Indexers are based on data source types or platforms, with individual indexers for:
+Azure Cognitive Search Indexers are based on data source types or platforms, with individual indexers for:
 - **SQL Server on Azure**
 - **Cosmos DB**
 - **Azure Table Storage and Blob Storage**
 
-At the moment there is no out of the box Azure Search indexer for SharePoint Online content; hence the reason why we are publishing this project.
+At the moment there is no out of the box Azure Cognitive Search indexer for SharePoint Online content; hence the reason why we are publishing this project.
 
 ## High Level Architecture Overview
 
@@ -36,9 +36,9 @@ At the moment there is no out of the box Azure Search indexer for SharePoint Onl
 
 The solution comprises of the following Azure resources:
 
-- **Azure Search**
+- **Azure Cognitive Search**
 - **Azure General Purpose Storage Account** - We leverage (BLOBs and Tables)
-- **Azure Web Apps**- for hosting custom SharePoint Online Metadata Merging Web API - used for merging SharePoint Field contents with the associated document inside Azure Search index
+- **Azure Web Apps**- for hosting custom SharePoint Online Metadata Merging Web API - used for merging SharePoint Field contents with the associated document inside Azure Cognitive Search index
 - **Application Insights** for logging
 
 ## Software Components:
@@ -47,7 +47,7 @@ The solution comprises of the following Azure resources:
 
 Stand-alone DotNetCore console app responsible for:
 
-- Initializing Azure Search index / indexer / skillset mapping / synonym mapping against the Azure Search instance.
+- Initializing Azure Cognitive Search index / indexer / skillset mapping / synonym mapping against the Azure Cognitive Search instance.
   
 - Downloading SharePoint Online Document Library (Documents) and associated Fields - via Microsoft Graph SDK. Graph SDK handles the [Throttling](https://docs.microsoft.com/en-us/graph/throttling) retry attempts back to SharePoint Online for us as it respects the Retry-After HTTP response headers internally.
   
@@ -90,7 +90,7 @@ AzureSearch.SharePointConnector.exe [-fullcrawl | -incrementalcrawl]
 
 **AzureSearch.SharepointOnline.Connector.CustomSkills:**
 
-Enriches the Azure Search Index with SharePoint metadata. This component is invoked as part of the Azure Search indexer custom skill pipeline. You can read more details on the configuration around this compnent in the Getting Started Area.
+Enriches the Azure Search Index with SharePoint metadata. This component is invoked as part of the Azure Cognitive Search indexer custom skill pipeline. You can read more details on the configuration around this compnent in the Getting Started Area.
 
 ## Current Functionality
 
@@ -99,7 +99,7 @@ At the moment the following functionality is available:
 - Crawling of SharePoint online Document Libraries through Graph API.
 - Association of SharePoint Document Library Fields to the documents - providing a single complete Azure search index with all the related data. 
 - Crawl Type: **Full Crawl**
-- Automatic creation of Azure Search Index Schema based on the fields you need and BLOB indexer.
+- Automatic creation of Azure Cognitive Search Index Schema based on the fields you need and BLOB indexer.
    
 ## Planned Functionality
 
@@ -108,7 +108,7 @@ Please note that some of the dev work on the below functionality has already com
 - Incremental crawling thorugh the use of [Graph API delta Tokens](https://docs.microsoft.com/en-us/graph/delta-query-overview) and leveraging [Azure Table storage](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview) for tracking of the last known change tokens during crawl time for more efficient crawling
 - SharePoint Online ACL / Azure Search Security Trimming
 
-
+Cognitive 
 
 # Getting Started
 
@@ -178,9 +178,9 @@ Now we need to grant the newly created AAD app registration with Graph API permi
 ## 2. Define the Azure Search Index, Indexer, SkillSet and SnynonymMap Defintions
 
 ### Index Definition
-During this phase we will need to consider all the SharePoint Fields that we would like to be indexed and exposed via Azure Search. We have provided a sample Azure Search index definition for you which includes some basic SharePoint Fields as part of the index. 
+During this phase we will need to consider all the SharePoint Fields that we would like to be indexed and exposed via Azure Cognitive Search. We have provided a sample Azure Cognitive Search index definition for you which includes some basic SharePoint Fields as part of the index. 
 
-Add Azure Search [Fields](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index) as you require them but make sure to always keep **SPWebUrl** and **blobUri** as the code has dependendencies on these two fields. If you want to you can also add custom [Suggesters](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#suggesters), [scoring profiles](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#scoring-profiles) and [analyzers](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#analyzers) as part of your index definition.
+Add Azure Cognitive Search [Fields](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index) as you require them but make sure to always keep **SPWebUrl** and **blobUri** as the code has dependendencies on these two fields. If you want to you can also add custom [Suggesters](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#suggesters), [scoring profiles](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#scoring-profiles) and [analyzers](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#analyzers) as part of your index definition.
 
 **Important Note:** Take note of the index Field names from this file as you will use them as config across the following files:
 
@@ -508,9 +508,9 @@ Do not modify any of the below fields as we inject these values for you:
 
 This is the area where we define the different skills that will run through as part of the indexer content enrichment pipeline. 
 
-Here we have a number out of the box Azure Search Cognitive skills such as OCR detection and you will notice this is where we have out Custom WebAPI skillset defined. This is pointing back to our AzureSearch.SharepointOnline.Connector.CustomSkills WebAPI.
+Here we have a number out of the box Azure Cognitive Search skills such as OCR detection and you will notice this is where we have out Custom WebAPI skillset defined. This is pointing back to our AzureSearch.SharepointOnline.Connector.CustomSkills WebAPI.
 
-This custom skill provides us with the ability to extract information from two different datasets (raw sharePoint SPFile contents and the associated metadata which we store as an associated SPFile.json) and enrich the same Azure Search index.
+This custom skill provides us with the ability to extract information from two different datasets (raw sharePoint SPFile contents and the associated metadata which we store as an associated SPFile.json) and enrich the same Azure Cognitive Search index.
 
 AzureSearch.SharepointOnline.Connector.CustomSkills skill needs to known which SharePoint Fields from the metadata.json files that are uploaded to the Azure Storage BLOB container as part of the 'AzureSearch.SharePointOnline.Connector' run need to be written back to which fields in Azure search Index. 
 
@@ -617,7 +617,7 @@ Do not modify the name attribute of the below defintion.
 
 ## 3. Deploy / Configure AzureSearch.SharepointOnline.Connector.CustomSkills: <br/>
 
-During Azure Search indexing - we call out into a custom Skill; which enriches the crawled SharePoint Document LIbrary Attachment data with raw SharePoint Field data. Before we can run the SPOConnector console app - we have to deploy **AzureSearch.SharepointOnline.Connector.CustomSkills** to a public endpoint.
+During Azure Cognitive Search indexing - we call out into a custom Skill; which enriches the crawled SharePoint Document LIbrary Attachment data with raw SharePoint Field data. Before we can run the SPOConnector console app - we have to deploy **AzureSearch.SharepointOnline.Connector.CustomSkills** to a public endpoint.
 
 - Open up AzureSearch.SharepointOnline.Connector.CustomSkills/appSettings.json
 
@@ -671,11 +671,11 @@ During Azure Search indexing - we call out into a custom Skill; which enriches t
 }
 ```
 **Important:**  
-You will see a file that looks as per the above structure. This is a mapping file which describes which SharePoint FieldName you want mapped to what Azure Search Index Field name. 
+You will see a file that looks as per the above structure. This is a mapping file which describes which SharePoint FieldName you want mapped to what Azure Cognitive Search Index Field name. 
 
 **metadataFieldName** is the name of the SharePoint Field that is stored as part of the metadata json file during crawling.
 
-**outputFieldName** is the name of the Azure Search index that you want to map the MetadataFieldName to. Make sure that the outputFieldName is a valid field inside Azure Search Index defintion located in:
+**outputFieldName** is the name of the Azure Cognitive Search index that you want to map the MetadataFieldName to. Make sure that the outputFieldName is a valid field inside Azure Cognitive Search Index defintion located in:
 
     AzureSearch.SharePointOnline.Connector/SearchDefinitions/blobIndexer.json 
     
@@ -772,7 +772,7 @@ Most of the properties in the above JSON file are self explanatory.
 For the **AADDetails** section fill in the details from your newly geenrated AAD App Registration you performed as part of step 2 above.
 
 
-For **SearchDetails** fill in the details from your newly stood up Azure Search instance and the cogntive Service.
+For **SearchDetails** fill in the details from your newly stood up Azure Cognitive Search instance and the cogntive Service.
 
 Make sure to paste the same value you had generated and entered into **'AzureSearch.SharepointOnline.Connector.CustomSkills/appsettings.json' EnvironmentConfig.ApiKey** back into 
 
