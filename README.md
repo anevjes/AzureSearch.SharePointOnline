@@ -47,11 +47,11 @@ The solution comprises of the following Azure resources:
 
 Stand-alone DotNetCore console app responsible for:
 
-- Initializing Azure Cognitive Search index / indexer / skillset mapping / synonym mapping against the Azure Cognitive Search instance.
+- Initializing Azure Cognitive Search index / indexer / skill-set mapping / synonym mapping against the Azure Cognitive Search instance.
   
 - Downloading SharePoint Online Document Library (Documents) and associated Fields - via Microsoft Graph SDK. Graph SDK handles the [Throttling](https://docs.microsoft.com/en-us/graph/throttling) retry attempts back to SharePoint Online for us as it respects the Retry-After HTTP response headers internally.
   
-- Drops the discovered Documents and its associated metadata into Azure Blob storage. Container paths in blob storage follow the same naming convention as the urls. For each document that is discovered it is accomponied with an additional .json file which includes all the discovered metadata.<br/>
+- Drops the discovered Documents and its associated metadata into Azure Blob storage. Container paths in blob storage follow the same naming convention as the urls. For each document that is discovered it is accompanied with an additional .json file which includes all the discovered metadata.<br/>
   
   _Example:_
 
@@ -78,7 +78,7 @@ Stand-alone DotNetCore console app responsible for:
 ```
 
 - Incremental Crawling (partially working)- As part of this we leverage two Azure Storage Tables:
-    - spoIncrementalCrawlerTokens - Used for keepign track of all the Microsoft Graph API Delta tokens per Document Library. This makes our crawling more efficent as we only recrawl the changes
+    - spoIncrementalCrawlerTokens - Used for keeping track of all the Microsoft Graph API Delta tokens per Document Library. This makes our crawling more efficient as we only re-crawl the changes
     - Unfortunately as part of delta changes we do not get the URL of the deleted items. Microsoft Graph Delta query only returns ItemID for deleted items - so for us to keep track of the mapping between ItemIds and the URLs we write all the itemIds and their associated URLs inside spoItems Table. This way when it comes to removing deleted SharePoint Document Library items from azure index we can achieve this through this mapping.
 - 
 Usage example:
@@ -90,7 +90,7 @@ AzureSearch.SharePointConnector.exe [-fullcrawl | -incrementalcrawl]
 
 **AzureSearch.SharepointOnline.Connector.CustomSkills:**
 
-Enriches the Azure Search Index with SharePoint metadata. This component is invoked as part of the Azure Cognitive Search indexer custom skill pipeline. You can read more details on the configuration around this compnent in the Getting Started Area.
+Enriches the Azure Search Index with SharePoint metadata. This component is invoked as part of the Azure Cognitive Search indexer custom skill pipeline. You can read more details on the configuration around this component in the Getting Started Area.
 
 ## Current Functionality
 
@@ -105,8 +105,8 @@ At the moment the following functionality is available:
 
 Please note that some of the dev work on the below functionality has already commenced as you will see in the source code.
 
-- Incremental crawling thorugh the use of [Graph API delta Tokens](https://docs.microsoft.com/en-us/graph/delta-query-overview) and leveraging [Azure Table storage](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview) for tracking of the last known change tokens during crawl time for more efficient crawling
-- SharePoint Online ACL / Azure Search Security Trimming
+- Incremental crawling through the use of [Graph API delta Tokens](https://docs.microsoft.com/en-us/graph/delta-query-overview) and leveraging [Azure Table storage](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview) for tracking of the last known change tokens during crawl time for more efficient crawling
+- SharePoint Online ACL / Azure Cognitive Search Security Trimming
 
 Cognitive 
 
@@ -140,7 +140,7 @@ Cognitive
     
 
 ## 2. Configure Azure Active Directory App Registration:
-Calls to Graph API - for SharePoint online crawling will be perfomed by an AAD app registration. We require an AAD App registration to be created in your SharePoint Online AAD tenant. This will need to be carried out by your AAD *Global Admin* account as we will need them to grant consent. 
+Calls to Graph API - for SharePoint online crawling will be performed by an AAD app registration. We require an AAD App registration to be created in your SharePoint Online AAD tenant. This will need to be carried out by your AAD *Global Admin* account as we will need them to grant consent. 
 
 - Login into Azure Portal
 - Switch Directory to your SharePoint Online Directory
@@ -180,7 +180,7 @@ Now we need to grant the newly created AAD app registration with Graph API permi
 ### Index Definition
 During this phase we will need to consider all the SharePoint Fields that we would like to be indexed and exposed via Azure Cognitive Search. We have provided a sample Azure Cognitive Search index definition for you which includes some basic SharePoint Fields as part of the index. 
 
-Add Azure Cognitive Search [Fields](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index) as you require them but make sure to always keep **SPWebUrl** and **blobUri** as the code has dependendencies on these two fields. If you want to you can also add custom [Suggesters](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#suggesters), [scoring profiles](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#scoring-profiles) and [analyzers](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#analyzers) as part of your index definition.
+Add Azure Cognitive Search [Fields](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index) as you require them but make sure to always keep **SPWebUrl** and **blobUri** as the code has dependencies on these two fields. If you want to you can also add custom [Suggesters](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#suggesters), [scoring profiles](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#scoring-profiles) and [analyzers](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index#analyzers) as part of your index definition.
 
 **Important Note:** Take note of the index Field names from this file as you will use them as config across the following files:
 
@@ -377,7 +377,7 @@ Add Azure Cognitive Search [Fields](https://docs.microsoft.com/en-us/azure/searc
 ```
 ## Indexer Definition
 
-During this stage you will need to map index fields from the index definition deifned in previous step to the Azure BLOB indexer. This is performed via fieldMappings.
+During this stage you will need to map index fields from the index definition defined in previous step to the Azure BLOB indexer. This is performed via fieldMappings.
 
 **Important:**
 Do not modify any of the below fields as we inject these values for you:
@@ -508,7 +508,7 @@ Do not modify any of the below fields as we inject these values for you:
 
 This is the area where we define the different skills that will run through as part of the indexer content enrichment pipeline. 
 
-Here we have a number out of the box Azure Cognitive Search skills such as OCR detection and you will notice this is where we have out Custom WebAPI skillset defined. This is pointing back to our AzureSearch.SharepointOnline.Connector.CustomSkills WebAPI.
+Here we have a number out of the box Azure Cognitive Search skills such as OCR detection and you will notice this is where we have out Custom WebAPI skill-set defined. This is pointing back to our AzureSearch.SharepointOnline.Connector.CustomSkills WebAPI.
 
 This custom skill provides us with the ability to extract information from two different datasets (raw sharePoint SPFile contents and the associated metadata which we store as an associated SPFile.json) and enrich the same Azure Cognitive Search index.
 
@@ -604,7 +604,7 @@ We have provided a sample synonym map file for you inside:
 AzureSearch.SharePointOnline.Connector/SearchDefinitions/blobSynonymMap.json.
 
 **Important:**
-Do not modify the name attribute of the below defintion.
+Do not modify the name attribute of the below definition.
 
 ```json
 {
@@ -625,9 +625,9 @@ During Azure Cognitive Search indexing - we call out into a custom Skill; which 
 
     - **MetadataStorageConnectionString** - set this to the full connection string to the General Purpose Storage account you setup as part of **step 1** above.
 
-    - **EnvironmentConfig.ApiKey** - We use this key as another layer of authorization for the calls to the custom WebAPI from the indexer. You can set this to any value you like - we generate a GUID and set that valeu in here. Please make sure to save this value as you will need to supply this value inside **AzureSearch.SharePointOnline.Connector/appSettings.json** file later on.
+    - **EnvironmentConfig.ApiKey** - We use this key as another layer of authorization for the calls to the custom WebAPI from the indexer. You can set this to any value you like - we generate a GUID and set that value in here. Please make sure to save this value as you will need to supply this value inside **AzureSearch.SharePointOnline.Connector/appSettings.json** file later on.
 
-    - **EnvironmentConfig.MappingFile** - This is a index to sharepoint field mapping file location. We have set this to be configurable incase you want to easily port the hosting of this WebAPI to a container. This generally points to physical path of where AzureSearch.SharepointOnline.Connector.CustomSkills project lives **/Mapping/metadatatoindexmapping.json**
+    - **EnvironmentConfig.MappingFile** - This is a index to SharePoint field mapping file location. We have set this to be configurable incase you want to easily port the hosting of this WebAPI to a container. This generally points to physical path of where AzureSearch.SharepointOnline.Connector.CustomSkills project lives **/Mapping/metadatatoindexmapping.json**
 
     Now we are completed with the changes required inside *AzureSearch.SharepointOnline.Connector.CustomSkills/appSettings.json* time to update one more file inside AzureSearch.SharepointOnline.Connector.CustomSkills project.
 
@@ -675,7 +675,7 @@ You will see a file that looks as per the above structure. This is a mapping fil
 
 **metadataFieldName** is the name of the SharePoint Field that is stored as part of the metadata json file during crawling.
 
-**outputFieldName** is the name of the Azure Cognitive Search index that you want to map the MetadataFieldName to. Make sure that the outputFieldName is a valid field inside Azure Cognitive Search Index defintion located in:
+**outputFieldName** is the name of the Azure Cognitive Search index that you want to map the MetadataFieldName to. Make sure that the outputFieldName is a valid field inside Azure Cognitive Search Index definition located in:
 
     AzureSearch.SharePointOnline.Connector/SearchDefinitions/blobIndexer.json 
     
@@ -769,7 +769,7 @@ Within the AzureSearch.SharePointOnline.Connector project you will need to modif
 
 Most of the properties in the above JSON file are self explanatory.
 
-For the **AADDetails** section fill in the details from your newly geenrated AAD App Registration you performed as part of step 2 above.
+For the **AADDetails** section fill in the details from your newly generated AAD App Registration you performed as part of step 2 above.
 
 
 For **SearchDetails** fill in the details from your newly stood up Azure Cognitive Search instance and the cogntive Service.
@@ -801,3 +801,6 @@ AzureSearch.SharePointConnector.exe [-fullcrawl | -incrementalcrawl]
 TODO: Add in a GIF Animation of a working  AzureSearch.SharePointOnline.Connector Console App as a demo.
 
 # Contribute
+
+* Keep Master branch deployable; create new branches for new features / bug fixes and merge them into Master via Pull Requests when they’re completed.
+* Raise feature requests / bugs as issues.
