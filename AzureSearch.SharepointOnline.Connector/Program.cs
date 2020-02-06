@@ -125,11 +125,6 @@ namespace AzureSearch.SharePointConnector
             //Search
             AzureSearchServiceHelper searchClient = new AzureSearchServiceHelper(SearchServiceName, SearchServiceAdminKey);
 
-            //Lookup itemId for the item that needs to be removed from the search index
-
-            //Now delete the itemId from the index
-            await searchClient.DeleteItemFromIndexAsync("aaaa", SearchServiceIndexName, "11");
-
             IDriveItemChildrenCollectionPage docLibItems;
             IDriveItemDeltaCollectionPage docLibDeltaItems;
 
@@ -152,7 +147,7 @@ namespace AzureSearch.SharePointConnector
 
                 }
 
-                if (args[i].ToLower() == "-includeAcls")
+                if (args[i].ToLower() == "-includeacls")
                 {
                     IncludeAcls = true;
                     Console.WriteLine("Search Crawl mode set to Full");

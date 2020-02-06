@@ -694,6 +694,8 @@ You will see a file that looks as per the above structure. This is a mapping fil
 
 Within the AzureSearch.SharePointOnline.Connector project you will need to modify the following configuration files:
 
+IMPORTANT: The below sample currently uses local config files. Please note that best practice for storing secrets is to keep them outside of configuration files. We will update this code to use Azure KeyVault - it is highly recommended that if you use this solution that you decouple the secrets from the below config files and make use of Azure KeyVault. A good sample on how to do this is [here](https://github.com/Azure-Samples/azure-search-knowledge-mining/blob/master/workshops/Appendix/KeyVault.md).   
+
 *AzureSearch.SharePointOnline.Connector/appSettings.json*
 
 ```json

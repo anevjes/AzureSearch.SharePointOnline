@@ -207,15 +207,6 @@ namespace AzureSearch.SharePointConnector.Helpers
                             //If no ID is present then its a sharepoint group
                             if (grantedObjectId == null)
                             {
-                                //var groupLookup = await graphClient.Groups.Request()//.Filter("displayName+eq+true")
-                                //.Select(e => new {
-                                //    e.Id,
-                                //    e.DisplayName
-                                //})
-                                //.GetAsync();
-                                //var groupLookup = await graphClient.Groups.Request().GetAsync();
-                                //var groupLookup = await graphClient.Groups.Request().Filter(string.Format("displayName+eq+{0}", grantedDispayName)).GetAsync();
-
                                 var scopes = new[] { _spoHostName + "/.default" };
                                 //var scopes = new[] { _spoHostName + "/Sites.FullControl.All" };
 
@@ -238,11 +229,6 @@ namespace AzureSearch.SharePointConnector.Helpers
 
                                 ////setup the client get
                                 HttpResponseMessage result2 = await client.GetAsync(String.Format("{0}/_api/Web/SiteGroups/GetByName('{1}')/users", SPWebUrl, grantedDispayName));
-                                //var requestUrl = "https://m365x069897.sharepoint.com/_api/web?$select=Title";
-                                var requestUrl = "https://m365x069897.sharepoint.com/_api/web/SiteGroups/";
-
-                                HttpResponseMessage result3 = await client.GetAsync(requestUrl);
-
 
                                 string filter = string.Format("startswith(displayName, {0}", grantedDispayName);
                                 //string filter = string.Format("displayName startswith '{0}'", grantedDispayName);
